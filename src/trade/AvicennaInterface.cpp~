@@ -1,0 +1,139 @@
+/*
+ * AvicennaInterface.cpp
+ *
+ *  Created on: May 12, 2016
+ *      Author: jamil
+ */
+
+#include "AvicennaInterface.h"
+
+
+std::vector<AvicennaInterface *> AvicennaInterface::avicenna_pool = std::vector<AvicennaInterface *>();
+std::thread * AvicennaInterface::api_call = nullptr;
+bool AvicennaInterface::stop = true;
+std::mutex AvicennaInterface::start_mutex;
+std::condition_variable AvicennaInterface::start_condition;
+
+AvicennaInterface::AvicennaInterface(std::string sym, std::string account_id):
+	account_id(account_id),
+	symbol(sym),
+	latest_price(-1.00),
+	earliest_price(-1.00),
+	max_price(-1.00),
+	min_price(-1.00),
+	start_interval(true) {
+	init();
+	//register for all avicenna connection
+	avicenna_pool.push_back(this);
+
+	//initialize thread to call api to inquire
+	//this should be called only once to initiate update price thread for all Avicenna Connections
+	static std::once_flag only_once;
+	std::call_once(only_once, [](){
+		api_call = new std::thread(AvicennaInterface::updateAllPrices);
+	});
+}
+
+
+void AvicennaInterface::init() {
+
+	TradingConfig &tradingConfig = *TradingConfig::getInstance();
+
+	TradeAccountData *tradeAccountData = tradingConfig.getTradeAccountData(account_id);
+	if ( nullptr == tradeAccountData ) {
+		WARN <<LOG_AVICENNA_INTERFACE<<"TradeAccountData with Account ID "<<account_id<<" doesn't exist! Check account configurations file";
+		return;
+	}
+
+	trade_account_data = *tradeAccountData;
+
+	char *ip = strdup(trade_account_data.dll_ip.c_str());
+	char *str1 = strdup(trade_account_data.dll_str1.c_str());
+	char *str2 = strdup(trade_account_data.dll_str2.c_str());
+	char *str3 = strdup(trade_account_data.dll_str3.c_str());
+	char *str4 = strdup(trade_account_data.dll_str4.c_str());
+	char *str5 = strdup(trade_account_data.dll_str5.c_str());
+
+	DEBUG<<LOG_AVICENNA_INTERFACE<<str1<<" "<<str2<<" "<<str3<<" "<<str4<<" "<<str5;
+
+	//API Initialization
+	SetIP(ip);	//setting up ip for API
+	SetVariableConfig(str1, str3, str4, str5);
+	DEBUG<<LOG_AVICENNA_INTERFACE<<"SetVariableConfig("<<str1<<","<<str3<<","<<str4<<","<<str5<<")";
+}
+
+
+void AvicennaInterface::updatePrice () {
+
+	std::lock_guard<std::mutex> lock(rw_mutex);
+	std::chrono::duration<double> elapsed_time = std::chrono::steady_clock::now() - last_executed;
+	if ( elapsed_time.count() > trade_account_data.dll_timer1 ) { //if timer for the call has expired
+		price = earliest_price;
+		if ( price > 0 ) {
+			TRACE<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Call to CalculateAvicennaSuperPlus("<<price<<")";
+			CalculateAvicennaSuperPlus(price);
+			output[0] = GetExportValue1();
+			output[1] = GetExportValue2();
+			output[2] = GetExportValue3();
+			output[3] = GetExportValue4();
+			DEBUG<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Earliest Price: "<<price<<" Export values: "<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3];
+		}
+
+		price = max_price;
+		if ( price > 0 ) {
+			TRACE<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Call to CalculateAvicennaSuperPlus("<<price<<")";
+			CalculateAvicennaSuperPlus(price);
+			output[0] = GetExportValue1();
+			output[1] = GetExportValue2();
+			output[2] = GetExportValue3();
+			output[3] = GetExportValue4();
+			DEBUG<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Maximum Price: "<<price<<" Export values: "<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3];
+		}
+
+		price = min_price;
+		if ( price > 0 ) {
+			TRACE<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Call to CalculateAvicennaSuperPlus("<<price<<")";
+			CalculateAvicennaSuperPlus(price);
+			output[0] = GetExportValue1();
+			output[1] = GetExportValue2();
+			output[2] = GetExportValue3();
+			output[3] = GetExportValue4();
+			DEBUG<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Minimum Price: "<<price<<" Export values: "<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3];
+		}
+		
+		double price = latest_price;
+		if ( price > 0 ) {
+			TRACE<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Call to CalculateAvicennaSuperPlus("<<price<<")";
+			CalculateAvicennaSuperPlus(price);
+			output[0] = GetExportValue1();
+			output[1] = GetExportValue2();
+			output[2] = GetExportValue3();
+			output[3] = GetExportValue4();
+			DEBUG<<LOG_AVICENNA_INTERFACE<<std::showpoint<<"Latest Price: "<<price<<" Export values: "<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3];
+		}
+		
+		last_executed = std::chrono::steady_clock::now();
+		start_interval = true;
+	}
+}
+
+void AvicennaInterface::updateAllPrices () {
+	TRACE<<"AvicennaInterface::updateAllPrices thread";
+
+	std::unique_lock<std::mutex> lock(start_mutex);
+	start_condition.wait(lock, [](){ return !stop;});
+
+	while ( !stop ) {
+		for (auto itr = avicenna_pool.begin(); itr != avicenna_pool.end(); itr++) {
+			AvicennaInterface *avicenna = *itr;
+			avicenna->updatePrice();
+		}
+		//sleep for one second
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
+}
+
+AvicennaInterface::~AvicennaInterface() {
+
+}
+

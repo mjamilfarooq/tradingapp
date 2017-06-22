@@ -1,0 +1,7 @@
+RecordType,AccountName,SymbolorUnderlier,Root,ExpirationDate,Strike,Quantity,PutorCall,Price
+EQUITY,,user1,AA.BA,AA.BA,,,0,,10.181087
+EQUITY,,user1,AAPL.BA,AAPL.BA,,,400,,104.857500
+EQUITY,,user1,ABX.BA,ABX.BA,,,0,,16.169634
+EQUITY,,user_high_risk,AA.BA,AA.BA,,,-400,,10.196000
+EQUITY,,user_high_risk,ABX.BA,ABX.BA,,,-400,,16.176250
+EQUITY,,user_high_risk,AAPL.BA,AAPL.BA,,,0,,104.848750

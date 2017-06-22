@@ -1,0 +1,60 @@
+/*
+ * AvicennaInterface.h
+ *
+ *  Created on: May 12, 2016
+ *      Author: jamil
+ */
+
+#ifndef AVICENNAINTERFACE_H_
+#define AVICENNAINTERFACE_H_
+
+#include <iostream>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <thread>
+#include <atomic>
+#include <mutex>
+
+#include "../config/TradingConfig.h"
+#include "../libs/avicenna/AvicennaSuperPlus.h"
+
+
+#define LOG_AVICENNA_INTERFACE " <"<<this->symbol<<","<<this->account_id<<"> "
+
+
+class AvicennaInterface:public CAvicenna_SuperPlus {
+
+	std::string account_id;
+	std::string symbol;
+	TradeAccountData trade_account_data;
+	std::chrono::steady_clock::time_point last_executed;
+	double output[4];
+	atomic<double> price;
+	bool is_price_changed;
+	bool is_initialized;
+
+
+	//this should maintain all avicenna connections pool
+	static std::vector<AvicennaInterface *> avicenna_pool;
+	static std::thread *api_call;
+	static void updateAllPrices();
+	static bool stop;
+
+	void init();	//called by construtor to connect initialize Avicenna
+	void updatePrice();
+public:
+	AvicennaInterface(std::string, std::string );	//configuration that contain input paramters and ip
+	~AvicennaInterface();
+
+	void update_price (uint8_t priceType, uint32_t price) {
+		DEBUG<<LOG_AVICENNA_INTERFACE<<"update price: "<<;
+		double price_double = static_cast<double>(price)/pow(10.0, priceType); 
+		this->price.exchange(price_double);
+		is_price_changed = true;
+	}
+
+
+};
+
+#endif /* AVICENNAINTERFACE_H_ */

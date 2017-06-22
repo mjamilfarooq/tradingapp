@@ -1,0 +1,15 @@
+
+
+set(AKELA_SOURCES
+   ${CMAKE_CURRENT_SOURCE_DIR}/OrderAccount.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/STEMMaddogConnection.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/STEMDirectConnection.cpp
+   PARENT_SCOPE
+)
+
+set(AKELA_HEADERS
+   ${CMAKE_CURRENT_SOURCE_DIR}/OrderAccount.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/STEMMaddogConnection.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/STEMDirectConnection.h
+   PARENT_SCOPE
+)

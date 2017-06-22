@@ -1,0 +1,77 @@
+/* 
+ * File:   main.cpp
+ * Author: acm
+ *
+ * Created on May, 12 2016, 11:13 PM
+ */
+
+#include <cstdlib>
+#include "../AvicennaSuperPlus/AvicennaSuperPlus.h"
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iomanip>
+using namespace std;
+
+#define MAX_PATH 260
+/*
+ *
+ */
+int main(int argc, char** argv)
+{
+
+
+        try
+        {
+                char buffer[MAX_PATH];
+                ifstream read_file("SuperPlusdata.txt", ios::in); // reading input data
+                if (!read_file)
+                {
+                  cout << "File not found\n";
+                  return 0;
+                }
+                CAvicenna_SuperPlus objSuperPlus;//  Create Object of AVicennaSuperPlus
+                char szSign[25], szSignNext[25];
+                char szStr[512];
+                double open = 0, close = 0, avi1 = 0, diff1 = 0, avi2 = 0, diff2 = 0;
+                FILE *fp = NULL;
+                fp = fopen("Output.txt","w+");
+                strcpy(buffer,"");
+                objSuperPlus.SetIP("10.1.20.73"); // IP call here
+                objSuperPlus.SetVariableConfig("AAA", "ABB", "II","EE","BB");
+		// "AAA" = Avicenna1,
+		// "ABB" = Avicenna2,
+		// "II" = Variable3,
+		// "EE" = Advance
+		// "BB" = Deimal code for Precision 
+                int loop = 0;
+                while(!read_file.eof())
+                {
+                        loop++;
+                        read_file.getline(buffer,MAX_PATH); // getting the whole input data
+                        
+                        objSuperPlus.CalculateAvicennaSuperPlus(atof(buffer));// Call "CalculateAvicennaSuperPlus" function  to get export Value and pass input values
+                        if(atof(buffer) > 0 )
+                        {
+                            //objSuperPlus.GetExportValue1() = to get Avicenna1 export value
+							//objSuperPlus.GetExportValue2() = to get Avicenna2 export value
+							//objSuperPlus.GetExportValue3() = to get Variable3 export value
+							//objSuperPlus.GetExportValue4() = to get Advance export value
+                            sprintf(szStr,"Input = %.2f, Value1 = %.2f, Value2 = %.2f, Value3 = %.2f, Value4 = %.2f\n",atof(buffer),objSuperPlus.GetExportValue1(), objSuperPlus.GetExportValue2(), objSuperPlus.GetExportValue3(), objSuperPlus.GetExportValue4()); 
+							cout<<szStr;
+                            fwrite(szStr,1,strlen(szStr),fp);
+                        }                        
+                        strcpy(buffer,"");
+
+                }
+                fclose(fp);
+        }
+        catch(...)
+        {
+
+        }
+        return 0;
+}
+

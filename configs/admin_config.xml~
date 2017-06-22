@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<admin>
+	<soft_close_time>13:45:00</soft_close_time>
+	<panic_close_time>14:45:00</panic_close_time>
+	<log severity='trace'/>
+	<verbose severity='info'/>
+</admin>

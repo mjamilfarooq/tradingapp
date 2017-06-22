@@ -1,0 +1,9 @@
+total 60K
+drwxrwxr-x 15 jamil jamil 4.0K دسمبر 27 21:25 ..
+-rw-rw-r--  1 jamil jamil   49 نومبر 25 08:15 kill_stem.sh
+-rwxrwxr-x  1 jamil jamil 2.7K دسمبر 11 19:38 livestats.sh
+-rwxrw-r--  1 jamil jamil 1.2K دسمبر 28 16:48 log_processing.sh
+-rwxrwxr-x  1 jamil jamil 2.0K ستمبر 30 19:00 positiontoredis.sh
+-rw-rw-r--  1 jamil jamil  388 ستمبر 20 00:00 redisfile.csv
+-rw-r--r--  1 jamil jamil  187 ستمبر 28 18:52 run_stem_for_server.sh
+-rw-r--r--  1 jamil jamil  176 ستمبر 20 04:03 run_stem.sh~

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<admin>
+	<soft_close_time>20:30:00</soft_close_time>
+	<panic_close_time>20:30:00</panic_close_time>
+	<generate_positionfile_time>20:30:00</generate_positionfile_time>
+	<log severity='trace'/>
+	<verbose severity='trace'/>
+	<redis enable='true' ip='172.25.172.51' port='6379'></redis>
+</admin>

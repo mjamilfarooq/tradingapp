@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trading>
+	<account id='pair1' type='pair'>
+		<long_account>user1</long_account>
+		<short_account>user2</short_account>
+		<legacy_timer>1</legacy_timer>
+		<legacy_trader_timer>1</legacy_trader_timer>
+		<legacy_pit_timer>1</legacy_pit_timer>
+		
+		<avicenna1>
+			<dll_timer1>10</dll_timer1>
+			<dll_timer2>2</dll_timer2>
+			<ip>10.1.20.74</ip>
+			<dll_input>false</dll_input>
+			<dll_str1>AAA</dll_str1>
+			<dll_str2>ABB</dll_str2>
+			<dll_str3>II</dll_str3>
+			<dll_str4>EE</dll_str4>
+			<dll_str5>BB</dll_str5>
+		</avicenna1>
+		
+		<avicenna2>
+			<dll_timer1>10</dll_timer1>
+			<dll_timer2>2</dll_timer2>
+			<ip>10.1.20.74</ip>
+			<dll_input>false</dll_input>
+			<dll_str1>AAA</dll_str1>
+			<dll_str2>ABB</dll_str2>
+			<dll_str3>II</dll_str3>
+			<dll_str4>EE</dll_str4>
+			<dll_str5>BB</dll_str5>
+		</avicenna2>
+		
+		<maximum_order>40</maximum_order>
+		<maximum_live>80</maximum_live>
+		
+		<venues attempts='4'>
+			<venue>XBowSIM</venue>
+<!--			<venue>XBowBATS</venue>-->
+<!--			<venue>XBowUBSATS</venue>-->
+		</venues>
+	</account>
+
+
+</trading>

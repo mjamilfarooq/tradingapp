@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symbols>
+	<user id='pair1'>
+		<sym name='ABX'  exchange ='BA' multiplier='1' divisor='100' max='2600' cancel_on_trigger='1' mmf='1' base_qty='100' tranch_value='4'>
+			<mpv value='0.01' limit='0.04' multiplier='1' />
+			<share_quantity value='100' increments='100'/>
+			<share_quantity value='100' increments='200'/>
+			<share_quantity value='200' increments='400'/>
+		</sym>
+<!--		<sym name='AAPL.BA'  exchange ='BA' multiplier='1' divisor='100' max='2600' cancel_on_trigger='1' mmf='1'>
+				<mpv value='0.01' limit='0.04'/>
+				<share_quantity value='400' increments='100'/>
+				<share_quantity value='1000' increments='200'/>
+				<share_quantity value='2600' increments='400'/>
+		</sym>
+		<sym name='ABX.BA'  exchange ='BA' multiplier='1' divisor='100' max='2600' cancel_on_trigger='1' mmf='1'>
+			<mpv value='0.01' limit='0.04'/>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>
+		<sym name='AAB.BA'  exchange ='BA' multiplier='1' divisor='100' max='2600' cancel_on_trigger='1' mmf='1'>
+			<mpv value='0.01' limit='0.04'/>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>-->
+	</user>
+</symbols>
+

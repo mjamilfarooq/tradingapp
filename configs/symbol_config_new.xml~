@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symbols>
+	<user id='pair1' exchange ='BA'>
+		<sym name='AA' multiplier='1' divisor='100' max='2600'>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>
+<!--		<sym name='AAPL.BA' multiplier='1' divisor='100' max='2600'>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>
+		<sym name='ABX.BA' multiplier='1' divisor='100' max='2600'>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>
+		<sym name='AAB.BA' multiplier='1' divisor='100' max='2600'>
+			<share_quantity value='400' increments='100'/>
+			<share_quantity value='1000' increments='200'/>
+			<share_quantity value='2600' increments='400'/>
+		</sym>-->
+	</user>
+</symbols>
+
